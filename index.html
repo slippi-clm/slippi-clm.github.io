@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Rubik" />
+    <style>
+      body {
+        background: #141414;
+        color: #fff;
+        font-family: 'Rubik';
+      }
+      h1 {
+        margin: 0;
+      }
+      p {
+        margin: 0;
+        color: #afafaf;
+      }
+      table {
+        margin-top: 14px;
+        font-weight: bold;
+        color: #fff;
+        width: 90vw;
+        max-width: 940px;
+        border-collapse:collapse;
+      }
+      table td {
+        padding: 5px;
+      }
+      table th {
+        color: #afafaf;
+        padding: 5px;
+      }
+      table tr {
+        background: #242424;
+        border-bottom: 1px solid #141414;
+      }
+      table a {
+        text-decoration: none;
+      }
+      table a p:first-child {
+        color: #fff;
+      }
+      table a:hover p:first-child {
+        color: #afafaf;
+      }
+      table a p:last-child {
+        color: #afafaf;
+        font-size: 0.75rem;
+      }
+      table img {
+        height: 46px;
+        width: 56px;
+      }
+      table td:last-child span {
+        color: #afafaf;
+      }
+      table td:last-child span:first-child {
+        color: rgb(46, 204, 64);
+      }
+      table td:last-child span:last-child {
+        color: rgb(255, 77, 0);
+      }
+      table td {
+        text-align: center;
+      }
+    </style>
+    <link rel="icon" href="/slippi-clm/resources/cropped-CLM-Icon-32x32.png" sizes="32x32" />
+    <link rel="icon" href="/slippi-clm/resources/cropped-CLM-Icon-192x192.png" sizes="192x192" />
+  </head>
+  <body>
+    <div style="display: flex;flex-direction: column;align-items: center;" >
+      <h1 style="display: flex;align-items: center;" >
+        <img src="/slippi-clm/resources/clm_logo.png" />
+        Chicagoland Melee Slippi Leaderboard
+      </h1>
+      <p id="updatedAt"></p>
+      <table id="data"></table>
+    </div>
+  </body>
+  <script>
+    const getRating = (p) => (
+      p.getConnectCode.user.rankedNetplayProfile.ratingOrdinal
+    );
+    fetch('/slippi-clm/data.json')
+      .then(res => res.json())
+      .then(({ data, updatedAt }) => {
+        console.log(data);
+        const now = Math.floor(Date.now() / 1000);
+        const minutesAgo = Math.floor((now - updatedAt) / 60);
+        const updatedAtText = ({
+          [0]: 'less than a minute ago',
+          [1]: '1 minute ago',
+        })[minutesAgo] || `${minutesAgo} minutes ago`;
+        document.getElementById('updatedAt').innerHTML = (
+          `Last updated ${updatedAtText}`
+        );
+        const players = Object.values(data);
+        players.sort((p1, p2) => getRating(p2) - getRating(p1))
+        const rows = players.map((p, i) => {
+          const rating = getRating(p);
+          const user = p.getConnectCode.user;
+          const cc = user.connectCode.code;
+          const slippiLink = `https://slippi.gg/user/${cc.replace('#', '-')}`;
+          const chars = user.rankedNetplayProfile.characters;
+          const needsPlus = chars.length > 5;
+          const { wins, losses } = user.rankedNetplayProfile;
+          const needsTag = p.tag.toLowerCase() !== user.displayName.toLowerCase();
+          const rankStr = rating >= 2191.75 ? 'Grandmaster' : (
+            rating >= 2136.28 ? 'Diamond 3' : (
+              rating >= 2073.67 ? 'Diamond 2' : (
+                rating >= 2003.92 ? 'Diamond 1' : (
+                  rating >= 1927.03 ? 'Platinum 3' : (
+                    rating >= 1843.00 ? 'Platinum 2' : (
+                      rating >= 1751.83 ? 'Platinum 1' : (
+                        rating >= 1653.52 ? 'Gold 3' : (
+                          rating >= 1548.07 ? 'Gold 2' : (
+                            rating >= 1435.48 ? 'Gold 1' : (
+                              rating >= 1315.75 ? 'Silver 3' : (
+                                rating >= 1188.88 ? 'Silver 2' : (
+                                  rating >= 1054.87 ? 'Silver 1' : (
+                                    rating >= 913.72 ? 'Bronze 3' : (
+                                      rating >= 765.43 ? 'Bronze 2' : (
+                                        'Bronze 1'
+          )))))))))))))));
+          return `
+            <tr>
+              <td>${i + 1}</td>
+              <td style="text-align: left;" >
+                <a href="${slippiLink}">
+                  <p>${user.displayName}</p>
+                  <p>${cc} ${needsTag ? `[${p.tag}]` : ''}</p>
+                </a>
+              </td>
+              <td>${'Yoshi'}</td>
+              <td>${Math.round(rating * 10) / 10}</td>
+              <td style="text-align: left;" >
+                <img
+                  title="${rankStr}"
+                  alt="${rankStr}"
+                  src="/slippi-clm/resources/ranks/${rankStr}.svg"
+                />
+              </td>
+              <td>
+                <span>${wins}</span>
+                <span>/</span>
+                <span>${losses}</span>
+                </td>
+            </tr>
+          `;
+        });
+        document.getElementById('data').innerHTML = `
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th style="text-align: left;">Player</th>
+              <th>Characters</th>
+              <th style="text-align: right;">Rating</th>
+              <th> </th>
+              <th>W / L</th>
+            </tr>
+          </thead>
+          <tbody>${rows.join('')}</tbody>
+        `;
+      })
+  </script>
+</html>
