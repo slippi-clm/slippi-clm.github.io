@@ -14,7 +14,7 @@
       }
       p {
         margin: 0;
-        color: #afafaf;
+        color: rgb(121, 123, 129);
       }
       table {
         margin-top: 14px;
@@ -28,7 +28,7 @@
         padding: 5px;
       }
       table th {
-        color: #afafaf;
+        color: rgb(121, 123, 129);
         padding: 5px;
       }
       table tr {
@@ -42,18 +42,33 @@
         color: #fff;
       }
       table a:hover p:first-child {
-        color: #afafaf;
+        color: rgb(121, 123, 129);
       }
       table a p:last-child {
-        color: #afafaf;
+        color: rgb(121, 123, 129);
         font-size: 0.75rem;
       }
       table img {
-        height: 46px;
-        width: 56px;
+        height: 42px;
+        width: 52px;
+      }
+      table div img {
+        height: 20px;
+        width: 20px;
+        position: absolute;
+        left: 13px;
+        top: 11px;
+      }
+      table div svg {
+        position: absolute;
+      }
+      table div path {
+        stroke: rgb(121, 123, 129);
+        fill: transparent;
+        stroke-width: 4px;
       }
       table td:last-child span {
-        color: #afafaf;
+        color: rgb(121, 123, 129);
       }
       table td:last-child span:first-child {
         color: rgb(46, 204, 64);
@@ -64,29 +79,62 @@
       table td {
         text-align: center;
       }
+      div.extra {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        width: 48px;
+        height: 44px;
+        color: rgb(121, 123, 129);
+      }
     </style>
-    <link rel="icon" href="/slippi-clm/resources/cropped-CLM-Icon-32x32.png" sizes="32x32" />
-    <link rel="icon" href="/slippi-clm/resources/cropped-CLM-Icon-192x192.png" sizes="192x192" />
+    <link rel="icon" href="/resources/cropped-CLM-Icon-32x32.png" sizes="32x32" />
+    <link rel="icon" href="/resources/cropped-CLM-Icon-192x192.png" sizes="192x192" />
   </head>
   <body>
     <div style="display: flex;flex-direction: column;align-items: center;" >
       <h1 style="display: flex;align-items: center;" >
-        <img src="/slippi-clm/resources/clm_logo.png" />
+        <img src="/resources/clm_logo.png" />
         Chicagoland Melee Slippi Leaderboard
       </h1>
       <p id="updatedAt"></p>
       <table id="data"></table>
+      <p style="margin-top: 10px; font-size: 0.75rem;" id="toAdd"></p>
     </div>
   </body>
   <script>
+    const mkArc = (usage) => {
+      const cos = Math.cos;
+      const sin = Math.sin;
+      const pi = Math.PI;
+      const f_matrix_times = (( [[a,b], [c,d]], [x,y]) => [ a * x + b * y, c * x + d * y]);
+      const f_rotate_matrix = (x => [[cos(x),-sin(x)], [sin(x), cos(x)]]);
+      const f_vec_add = (([a1, a2], [b1, b2]) => [a1 + b1, a2 + b2]);
+      const f_svg_ellipse_arc = (([cx,cy],[rx,ry], [t1, delta], base ) => {
+        delta = delta % (2*pi);
+        const rotMatrix = f_rotate_matrix (base);
+        const [sX, sY] = ( f_vec_add ( f_matrix_times ( rotMatrix, [rx * cos(t1), ry * sin(t1)] ), [cx,cy] ) );
+        const [eX, eY] = ( f_vec_add ( f_matrix_times ( rotMatrix, [rx * cos(t1+delta), ry * sin(t1+delta)] ), [cx,cy] ) );
+        const fA = ( (  delta > pi ) ? 1 : 0 );
+        const fS = ( (  delta > 0 ) ? 1 : 0 );
+        const path_2wk2r = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path_2wk2r.setAttribute("d", "M " + sX + " " + sY + " A " + [ rx , ry , base / (2*pi) *360, fA, fS, eX, eY ].join(" "));
+        return path_2wk2r;
+      });
+      return f_svg_ellipse_arc([22, 22], [18, 18], [3 * pi/2, (1 - usage) * 2 * pi], 0).outerHTML;
+    };
     const getRating = (p) => (
       p.getConnectCode.user.rankedNetplayProfile.ratingOrdinal
     );
-    fetch('/slippi-clm/data.json')
+    const uncase = (s) => (
+      s.split(' ').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ')
+    );
+    const now = Math.floor(Date.now() / 1000);
+    fetch(`/data.json?now=${now}`)
       .then(res => res.json())
       .then(({ data, updatedAt }) => {
         console.log(data);
-        const now = Math.floor(Date.now() / 1000);
         const minutesAgo = Math.floor((now - updatedAt) / 60);
         const updatedAtText = ({
           [0]: 'less than a minute ago',
@@ -103,26 +151,82 @@
           const cc = user.connectCode.code;
           const slippiLink = `https://slippi.gg/user/${cc.replace('#', '-')}`;
           const chars = user.rankedNetplayProfile.characters;
+          const isTop = !!user.rankedNetplayProfile.dailyGlobalPlacement;
           const needsPlus = chars.length > 5;
           const { wins, losses } = user.rankedNetplayProfile;
-          const needsTag = p.tag.toLowerCase() !== user.displayName.toLowerCase();
-          const rankStr = rating >= 2191.75 ? 'Grandmaster' : (
-            rating >= 2136.28 ? 'Diamond 3' : (
-              rating >= 2073.67 ? 'Diamond 2' : (
-                rating >= 2003.92 ? 'Diamond 1' : (
-                  rating >= 1927.03 ? 'Platinum 3' : (
-                    rating >= 1843.00 ? 'Platinum 2' : (
-                      rating >= 1751.83 ? 'Platinum 1' : (
-                        rating >= 1653.52 ? 'Gold 3' : (
-                          rating >= 1548.07 ? 'Gold 2' : (
-                            rating >= 1435.48 ? 'Gold 1' : (
-                              rating >= 1315.75 ? 'Silver 3' : (
-                                rating >= 1188.88 ? 'Silver 2' : (
-                                  rating >= 1054.87 ? 'Silver 1' : (
-                                    rating >= 913.72 ? 'Bronze 3' : (
-                                      rating >= 765.43 ? 'Bronze 2' : (
-                                        'Bronze 1'
-          )))))))))))))));
+          const needsTag = p.tag && p.tag.toLowerCase() !== user.displayName.toLowerCase();
+          const rankStr = (rating >= 2191.75 && isTop) ? 'Grandmaster' : (
+            rating >= 2350.00 ? 'Master 3' : (
+              rating >= 2275.00 ? 'Master 2' : (
+                rating >= 2191.75 ? 'Master 1' : (
+                  rating >= 2136.28 ? 'Diamond 3' : (
+                    rating >= 2073.67 ? 'Diamond 2' : (
+                      rating >= 2003.92 ? 'Diamond 1' : (
+                        rating >= 1927.03 ? 'Platinum 3' : (
+                          rating >= 1843.00 ? 'Platinum 2' : (
+                            rating >= 1751.83 ? 'Platinum 1' : (
+                              rating >= 1653.52 ? 'Gold 3' : (
+                                rating >= 1548.07 ? 'Gold 2' : (
+                                  rating >= 1435.48 ? 'Gold 1' : (
+                                    rating >= 1315.75 ? 'Silver 3' : (
+                                      rating >= 1188.88 ? 'Silver 2' : (
+                                        rating >= 1054.87 ? 'Silver 1' : (
+                                          rating >= 913.72 ? 'Bronze 3' : (
+                                            rating >= 765.43 ? 'Bronze 2' : (
+                                              'Bronze 1'
+          ))))))))))))))))));
+          chars.sort((c1, c2) => c2.gameCount - c1.gameCount);
+          const games = chars.reduce((total, { gameCount }) => total + gameCount, 0);
+          const freqChars = chars.filter(({ gameCount }) => gameCount > games * 0.02);
+          let toShowChars = freqChars.slice(0, 4);
+          if (toShowChars.length === 4 && chars.length > 4) {
+            toShowChars = freqChars.slice(0, 3);
+          }
+          console.log(toShowChars);
+          const charsHtml = toShowChars.map(({ character, gameCount }) => {
+            const usage = gameCount / games;
+            console.log(gameCount, character, usage);
+            const charName = uncase(character);
+            const perc = Math.round(usage * 1000) / 10;
+            const label = `${charName} (${perc}%)`
+            return `
+              <div style="position: relative; width: 48px; height: 44px;" >
+                <svg
+                  width="44"
+                  height="44"
+                >
+                  <circle stroke="#2ECC40" stroke-width="4" fill="transparent" r="18" cx="22" cy="22" />
+                  ${mkArc(usage)}
+                </svg>
+                <img
+                  title="${label}"
+                  alt="${label}"
+                  aria-label="${label}"
+                  src="/resources/chars/${character}.png"
+                />
+              </div>
+            `;
+          });
+          const extra = chars.length - toShowChars.length;
+          const extraHtml = extra === 0 ? '' : `
+            <div class="extra">
+              +${extra}
+              <svg
+                width="44"
+                height="44"
+              >
+                <circle
+                  stroke="rgba(121, 123, 129, 0.4)"
+                  stroke-width="2"
+                  stroke-dasharray="8"
+                  fill="transparent"
+                  r="20"
+                  cx="22"
+                  cy="22"
+                />
+              </svg>
+            </div>
+          `;
           return `
             <tr>
               <td>${i + 1}</td>
@@ -132,13 +236,19 @@
                   <p>${cc} ${needsTag ? `[${p.tag}]` : ''}</p>
                 </a>
               </td>
-              <td>${'Yoshi'}</td>
+              <td style="text-align: left;">
+                <div style="display: flex; flex-direction: row;" >
+                  ${charsHtml.join('')}
+                  ${extraHtml}
+                </div>
+              </td>
               <td>${Math.round(rating * 10) / 10}</td>
               <td style="text-align: left;" >
                 <img
                   title="${rankStr}"
                   alt="${rankStr}"
-                  src="/slippi-clm/resources/ranks/${rankStr}.svg"
+                  aria-label="${rankStr}"
+                  src="/resources/ranks/${rankStr}.svg"
                 />
               </td>
               <td>
@@ -154,13 +264,22 @@
             <tr>
               <th>Rank</th>
               <th style="text-align: left;">Player</th>
-              <th>Characters</th>
+              <th style="text-align: left;">Characters</th>
               <th style="text-align: right;">Rating</th>
               <th> </th>
               <th>W / L</th>
             </tr>
           </thead>
           <tbody>${rows.join('')}</tbody>
+        `;
+        document.getElementById('toAdd').innerHTML = `
+          DM 
+          <span style="font-weight: bolder;">dz#7215</span>
+          on Discord with your 
+          <span style="font-weight: bolder;">Slippi connect code</span>
+          and
+          <span style="font-weight: bolder;">preferred tag (if applicable)</span>
+          to be added to the leaderboard
         `;
       })
   </script>
