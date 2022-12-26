@@ -165,7 +165,6 @@
     fetch(`/data.json?now=${now}`)
       .then(res => res.json())
       .then(({ data, updatedAt }) => {
-        console.log(data);
         const minutesAgo = Math.floor((now - updatedAt) / 60);
         const updatedAtText = ({
           [0]: 'less than a minute ago',
@@ -213,10 +212,8 @@
           if (toShowChars.length === 4 && chars.length > 4) {
             toShowChars = freqChars.slice(0, 3);
           }
-          console.log(toShowChars);
           const charsHtml = toShowChars.map(({ character, gameCount }) => {
             const usage = gameCount / games;
-            console.log(gameCount, character, usage);
             const charName = uncase(character);
             const perc = Math.round(usage * 1000) / 10;
             const label = `${charName} (${perc}%)`
