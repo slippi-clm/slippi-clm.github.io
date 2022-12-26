@@ -16,30 +16,40 @@
       p {
         margin: 0;
         color: rgb(121, 123, 129);
+        font-size: 0.75rem;
+        max-width: 90vw;
       }
       table {
         margin-top: 14px;
         font-weight: bold;
         color: #fff;
         width: 90vw;
-        max-width: 940px;
-        border-collapse:collapse;
+        max-width: 960px;
+        border-collapse:separate;
+        border-spacing: 0;
       }
       table td {
         padding: 5px;
+        white-space: nowrap;
+        background: #242424;
+        position: relative;
+        z-index: 1;
+        border-top: 1px solid #141414;
       }
       table th {
         color: rgb(121, 123, 129);
         padding: 5px;
+        white-space: nowrap;
+        background: #242424;
       }
       table tr {
         background: #242424;
-        border-bottom: 1px solid #141414;
       }
       table a {
         text-decoration: none;
       }
       table a p:first-child {
+        font-size: 1rem;
         color: #fff;
       }
       table a:hover p:first-child {
@@ -89,6 +99,24 @@
         height: 44px;
         color: rgb(121, 123, 129);
       }
+      .right-pad {
+        padding-right: 40px;
+      }
+      .left-pad {
+        padding-left: 10px;
+      }
+      @media screen and (max-width: 800px) {
+        .stuck {
+          z-index: 2;
+          min-width: 50px;
+          left: 0;
+        }
+        .edge {
+          border-right: 1px solid black;
+          box-shadow: 2px 0 4px -2px #000;
+          left: 60px;
+        }
+      }
     </style>
     <link rel="icon" href="/resources/cropped-CLM-Icon-32x32.png" sizes="32x32" />
     <link rel="icon" href="/resources/cropped-CLM-Icon-192x192.png" sizes="192x192" />
@@ -99,9 +127,11 @@
         <img src="/resources/clm_logo.png" />
         Chicagoland Melee Slippi Leaderboard
       </h1>
-      <p id="updatedAt"></p>
-      <table id="data"></table>
-      <p style="margin-top: 10px; font-size: 0.75rem;" id="toAdd"></p>
+      <p style="margin-top: 10px; text-align: center;" id="updatedAt"></p>
+      <div style="overflow-x: auto; width: 90vw; max-width: 960px">
+        <table id="data"></table>
+      </div>
+      <p style="margin-top: 10px; text-align: center;" id="toAdd"></p>
     </div>
   </body>
   <script>
@@ -230,21 +260,21 @@
           `;
           return `
             <tr>
-              <td>${i + 1}</td>
-              <td style="text-align: left;" >
+              <td class="stuck" style="position: sticky; width: 50px;" >${i + 1}</td>
+              <td class="stuck edge right-pad" style="text-align: left; position: sticky;" >
                 <a href="${slippiLink}">
                   <p>${user.displayName}</p>
                   <p>${cc} ${needsTag ? `[${p.tag}]` : ''}</p>
                 </a>
               </td>
-              <td style="text-align: left;">
+              <td class="left-pad right-pad" style="text-align: left;">
                 <div style="display: flex; flex-direction: row;" >
                   ${charsHtml.join('')}
                   ${extraHtml}
                 </div>
               </td>
               <td>${Math.round(rating * 10) / 10}</td>
-              <td style="text-align: left;" >
+              <td class="right-pad" style="text-align: left;" >
                 <img
                   title="${rankStr}"
                   alt="${rankStr}"
@@ -263,11 +293,11 @@
         document.getElementById('data').innerHTML = `
           <thead>
             <tr>
-              <th>Rank</th>
-              <th style="text-align: left;">Player</th>
-              <th style="text-align: left;">Characters</th>
+              <th class="stuck" style="position: sticky; width: 50px;" >Rank</th>
+              <th class="stuck edge right-pad" style="text-align: left; position: sticky;">Player</th>
+              <th class="left-pad right-pad" style="text-align: left;">Characters</th>
               <th style="text-align: right;">Rating</th>
-              <th> </th>
+              <th class="right-pad"> </th>
               <th>W / L</th>
             </tr>
           </thead>
