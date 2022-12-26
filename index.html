@@ -100,21 +100,21 @@
         color: rgb(121, 123, 129);
       }
       .right-pad {
-        padding-right: 20px;
+        padding-right: 40px;
       }
       .left-pad {
-        padding-left: 15px;
+        padding-left: 10px;
       }
       @media screen and (max-width: 800px) {
         .stuck {
           z-index: 2;
-          min-width: 50px;
+          min-width: 25px;
           left: 0;
         }
         .edge {
           border-right: 1px solid black;
           box-shadow: 2px 0 4px -2px #000;
-          left: 60px;
+          left: 35px;
         }
       }
     </style>
@@ -257,7 +257,7 @@
           `;
           return `
             <tr>
-              <td class="stuck" style="position: sticky; width: 50px;" >${i + 1}</td>
+              <td class="stuck" style="position: sticky; width: 25px;" >${i + 1}</td>
               <td class="stuck edge right-pad" style="text-align: left; position: sticky;" >
                 <a href="${slippiLink}">
                   <p>${user.displayName}</p>
@@ -271,7 +271,7 @@
                 </div>
               </td>
               <td>${Math.round(rating * 10) / 10}</td>
-              <td class="right-pad" style="text-align: left;" >
+              <td>
                 <img
                   title="${rankStr}"
                   alt="${rankStr}"
@@ -290,11 +290,11 @@
         document.getElementById('data').innerHTML = `
           <thead>
             <tr>
-              <th class="stuck" style="position: sticky; width: 50px;" >Rank</th>
+              <th class="stuck" style="position: sticky; width: 25px;" >#</th>
               <th class="stuck edge right-pad" style="text-align: left; position: sticky;">Player</th>
               <th class="left-pad right-pad" style="text-align: left;">Characters</th>
-              <th style="text-align: right;">Rating</th>
-              <th class="right-pad"> </th>
+              <th>Rating</th>
+              <th>Rank</th>
               <th>W / L</th>
             </tr>
           </thead>
