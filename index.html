@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<title>CLM Slippi Leaderboard</title>
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,9 +27,9 @@
         background-color:#262631;
       }
       h1 {
-        margin: 0;
         font-size: 2.4rem;
         line-height: 1em;
+        margin: 20px 0;
       }
       p {
         margin: 0;
@@ -61,6 +62,7 @@
         background: #262631;
         border-radius: 6px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 3px;
+        font-size: 18px;
       }
       table td {
         padding: 5px;
@@ -99,7 +101,7 @@
         font-weight: 500;
       }
       table a:hover p:first-child {
-        color: #b3b3bd;
+        color: #d3d3db;
       }
       table a p:last-child {
         color: #9298a0;
@@ -202,7 +204,6 @@
       }
       @media screen and (max-width: 740px) {
         h1 {
-          margin: 0;
           font-size: 1.8rem;
         }
         .stuck {
@@ -213,13 +214,26 @@
         .edge {
           border-right: 1px solid black;
           box-shadow: 2px 0 4px -2px rgb(0 0 0  / 60%);
-          left: 47px;
+          left: 45px;
         }
         .right-pad {
           padding-right: 15px;
         }
         table td:first-child {
           padding: 0 10px;
+        }
+        .tooltip:focus .tooltiptext {
+          transform: translate(calc(-50% + 22px))
+          scale3d(1,1,1);
+          opacity: 1;
+          visibility: visible;
+        }
+        .ranktooltip:focus .tooltiptext {
+          transform: translate(calc(-50% + 26px))
+          translate(0, -6px)
+          scale3d(1,1,1);
+          opacity: 1;
+          visibility: visible;
         }
       }
     </style>
@@ -232,7 +246,7 @@
         <img style="height: 60px; padding-right: 12px;" src="/resources/clm.svg" />
         Chicagoland Melee <br> Slippi Leaderboard
       </h1>
-      <p style="font-size: 16px; margin-top: 10px;" id="updatedAt"></p>
+      <p style="font-size: 16px;" id="updatedAt"></p>
       <div class="container">
         <table id="data"></table>
       </div>
@@ -323,7 +337,7 @@
             const perc = Math.round(usage * 1000) / 10;
             const label = `${charName} (${perc}%)`
             return `
-              <div class="tooltip" style="position: relative; width: 44px; height: 44px; margin-right: 4px;" >
+              <div class="tooltip" tabindex="0" style="position: relative; width: 44px; height: 44px; margin-right: 4px;" >
                 <svg
                   width="44"
                   height="44"
@@ -376,7 +390,7 @@
                 </div>
               </td>
               <td>${Math.round(rating * 10) / 10}</td>
-              <td class="ranktooltip">
+              <td class="ranktooltip" tabindex="0">
                 <img
                   alt="${rankStr}"
                   aria-label="${rankStr}"
