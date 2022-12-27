@@ -209,6 +209,18 @@
         translate(0, -11px)
         scale3d(.5,.5,1);
       }
+      #updatedAt .tooltiptext {
+        top: unset;
+        transform: unset;
+        transform: translate(calc(-50% + 150px))
+        scale3d(.5,.5,1);
+      }
+      #updatedAt:hover .tooltiptext {
+        transform: translate(calc(-50% + 150px))
+        scale3d(1,1,1);
+        opacity: 1;
+        visibility: visible;
+      }
       a  {
         color:#5994af;
         text-decoration: none;
@@ -268,7 +280,7 @@
         </a>
         Chicagoland Melee <br> Slippi Leaderboard
       </h1>
-      <p style="font-size: 16px;" id="updatedAt"></p>
+      <p class="tooltip" style="font-size: 16px; width: 300px; text-align: center;" id="updatedAt"></p>
       <div class="container">
         <table id="data"></table>
       </div>
@@ -312,7 +324,7 @@
           [1]: '1 minute ago',
         })[minutesAgo] || `${minutesAgo} minutes ago`;
         document.getElementById('updatedAt').innerHTML = (
-          `Last updated ${updatedAtText}`
+          `Last updated ${updatedAtText}<div class="tooltiptext">Updates every 50 minutes</div>`
         );
         const players = Object.values(data);
         players.sort((p1, p2) => getRating(p2) - getRating(p1))
