@@ -338,7 +338,6 @@
             }
             return { ...p, rating }
           });
-        console.log(players);
         players.sort((p1, p2) => p2.rating - p1.rating)
         const rows = players.map((p, i) => {
           const rating = p.rating;
@@ -422,13 +421,14 @@
               </svg>
             </div>
           `;
-          const rankHtml = !isRanked ? '' : `
+          const rankHtml = `
             <img
+              style="visibility: ${isRanked ? 'visible' : 'hidden'}"
               alt="${rankStr}"
               aria-label="${rankStr}"
               src="/resources/ranks/${rankStr}.svg"
             />
-            <div class="tooltiptext">${rankStr}</div>
+            ${!isRanked ? '' : `<div class="tooltiptext">${rankStr}</div>`}
           `;
           return `
             <tr>
