@@ -1,63 +1,118 @@
 <!DOCTYPE html>
+<title>CLM Slippi Leaderboard</title>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Rubik" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#1f1f29">
+    <meta property="og:title" content="Chicagoland Melee Slippi Rank Tracker"/>
+    <meta property="og:description" content="Check out the top players on CLM's Slippi rankings!"/>
+    <meta property="og:url" content="https://slippi.chicagomelee.com">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Chicagoland Melee">
+    <meta property="og:image" content="/resources/CLM Slippi Rank Card.png">
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap');
       body {
-        background: #141414;
-        color: #fff;
+        background: #1f1f29;
+        color: #F4F4F9;
         font-family: 'Rubik';
       }
+      ::selection {
+        background: #3b6e86; /* WebKit/Blink Browsers */
+      }
+      ::-moz-selection {
+        background: #3b6e86; /* Gecko Browsers */
+      }
+      ::-webkit-scrollbar{ 
+        width: 20px;
+        height: 20px;
+      }
+      ::-webkit-scrollbar-thumb {
+        border: 5px solid transparent;
+        background-clip: padding-box;
+        border-radius: 100px;
+        background-color:#262631;
+      }
       h1 {
-        margin: 0;
+        font-size: 2.4rem;
+        line-height: 1em;
+        margin: 20px 0;
       }
       p {
         margin: 0;
-        color: rgb(121, 123, 129);
-        font-size: 0.75rem;
+        color: #9298a0;
+        font-size: 18px;
         max-width: 90vw;
+        font-weight: 400;
       }
-      table {
-        margin-top: 14px;
-        font-weight: bold;
-        color: #fff;
+      .main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .container {
+        overflow-y: hidden;
+        border-radius: 6px;
+        margin-top: 20px;
+        overflow-x: auto;
         width: 90vw;
         max-width: 960px;
-        border-collapse:separate;
+        padding-bottom: 16px;
+      }
+      table {
+        font-weight: bold;
+        color: #F4F4F9;
+        width: 90vw;
+        max-width: 960px;
+        border-collapse: separate;
         border-spacing: 0;
+        background: #262631;
+        border-radius: 6px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 3px;
+        font-size: 18px;
       }
       table td {
         padding: 5px;
         white-space: nowrap;
-        background: #242424;
         position: relative;
-        z-index: 1;
-        border-top: 1px solid #141414;
+        border-top: 1px solid #1f1f29;
+        background-color:#262631;
       }
       table th {
-        color: rgb(121, 123, 129);
-        padding: 5px;
+        color: #9298a0;
+        padding: 8px;
         white-space: nowrap;
-        background: #242424;
+        font-weight: 400;
+        font-size: 16px;
+        position: sticky;
+        background: #262631;
       }
-      table tr {
-        background: #242424;
+      table th:first-child {
+        border-top-left-radius: 6px;
+      }
+      table th:last-child {
+        border-top-right-radius: 6px;
+      }
+      table tr:last-child td:first-child {
+        border-bottom-left-radius: 6px;
+      }
+      table tr:last-child td:last-child {
+        border-bottom-right-radius: 6px;
       }
       table a {
         text-decoration: none;
       }
       table a p:first-child {
-        font-size: 1rem;
-        color: #fff;
+        font-size: 18px;
+        color: #F4F4F9;
+        font-weight: 500;
       }
       table a:hover p:first-child {
-        color: rgb(121, 123, 129);
+        color: #d3d3db;
       }
       table a p:last-child {
-        color: rgb(121, 123, 129);
-        font-size: 0.75rem;
+        color: #9298a0;
+        font-size: 12px;
       }
       table img {
         height: 42px;
@@ -74,18 +129,25 @@
         position: absolute;
       }
       table div path {
-        stroke: rgb(121, 123, 129);
+        stroke: #41414d;
         fill: transparent;
-        stroke-width: 4px;
+        stroke-width: 5px;
+      }
+      table td:first-child {
+        font-size: 20px;
+        padding: 0 20px;
+      }
+      table td:last-child {
+        padding: 0 10px;
       }
       table td:last-child span {
-        color: rgb(121, 123, 129);
+        color: #41414d;
       }
       table td:last-child span:first-child {
-        color: rgb(46, 204, 64);
+        color: #2ec840;
       }
       table td:last-child span:last-child {
-        color: rgb(255, 77, 0);
+        color: #ff4d00;
       }
       table td {
         text-align: center;
@@ -97,7 +159,9 @@
         position: relative;
         width: 48px;
         height: 44px;
-        color: rgb(121, 123, 129);
+        color: #9298a0;
+        font-weight: 400;
+        font-size: 16px;
       }
       .right-pad {
         padding-right: 25px;
@@ -105,7 +169,50 @@
       .left-pad {
         padding-left: 15px;
       }
-      @media screen and (max-width: 800px) {
+      .ranktooltip {
+        width: 52px;
+      }
+      .tooltiptext {
+        white-space: nowrap;
+        visibility: hidden;
+        opacity: 0;
+        background-color: #19191d;
+        font-weight: 400;
+        font-size: 12px;
+        color: #F4F4F9;
+        text-align: center;
+        border-radius: 4px;
+        padding: 4px 8px;
+        position: absolute;
+        top: 100%;
+        transform: translate(calc(-50% + 22px), -5px)
+        scale3d(.5,.5,1);
+        z-index: 3;
+        transition-duration: .2s;
+        cursor: default;
+      }
+      .tooltip:hover .tooltiptext {
+        transform: translate(calc(-50% + 22px))
+        scale3d(1,1,1);
+        opacity: 1;
+        visibility: visible;
+      }
+      .ranktooltip:hover .tooltiptext {
+        transform: translate(calc(-50% + 26px))
+        translate(0, -6px)
+        scale3d(1,1,1);
+        opacity: 1;
+        visibility: visible;
+      }
+      .ranktooltip .tooltiptext {
+        transform: translate(calc(-50% + 26px))
+        translate(0, -11px)
+        scale3d(.5,.5,1);
+      }
+      @media screen and (max-width: 740px) {
+        h1 {
+          font-size: 1.8rem;
+        }
         .stuck {
           z-index: 2;
           min-width: 25px;
@@ -113,8 +220,27 @@
         }
         .edge {
           border-right: 1px solid black;
-          box-shadow: 2px 0 4px -2px #000;
-          left: 35px;
+          box-shadow: 2px 0 4px -2px rgb(0 0 0  / 60%);
+          left: 45px;
+        }
+        .right-pad {
+          padding-right: 15px;
+        }
+        table td:first-child {
+          padding: 0 10px;
+        }
+        .tooltip:focus .tooltiptext {
+          transform: translate(calc(-50% + 22px))
+          scale3d(1,1,1);
+          opacity: 1;
+          visibility: visible;
+        }
+        .ranktooltip:focus .tooltiptext {
+          transform: translate(calc(-50% + 26px))
+          translate(0, -6px)
+          scale3d(1,1,1);
+          opacity: 1;
+          visibility: visible;
         }
       }
     </style>
@@ -122,16 +248,16 @@
     <link rel="icon" href="/resources/cropped-CLM-Icon-192x192.png" sizes="192x192" />
   </head>
   <body>
-    <div style="display: flex;flex-direction: column;align-items: center;" >
-      <h1 style="display: flex;align-items: center;" >
-        <img src="/resources/clm_logo.png" />
-        Chicagoland Melee Slippi Leaderboard
+    <div class="main">
+      <h1 style="display: flex; align-items: center;" >
+        <img style="height: 60px; padding-right: 12px;" src="/resources/clm.svg" />
+        Chicagoland Melee <br> Slippi Leaderboard
       </h1>
-      <p style="margin-top: 10px; text-align: center;" id="updatedAt"></p>
-      <div style="overflow-x: auto; width: 90vw; max-width: 960px">
+      <p style="font-size: 16px;" id="updatedAt"></p>
+      <div class="container">
         <table id="data"></table>
       </div>
-      <p style="margin-top: 10px; text-align: center;" id="toAdd"></p>
+      <p style="margin-top: 10px; font-size: .8rem;" id="toAdd"></p>
     </div>
   </body>
   <script>
@@ -218,7 +344,7 @@
             const perc = Math.round(usage * 1000) / 10;
             const label = `${charName} (${perc}%)`
             return `
-              <div style="position: relative; width: 48px; height: 44px;" >
+              <div class="tooltip" tabindex="0" style="position: relative; width: 44px; height: 44px; margin-right: 4px;" >
                 <svg
                   width="44"
                   height="44"
@@ -227,11 +353,11 @@
                   ${mkArc(usage)}
                 </svg>
                 <img
-                  title="${label}"
                   alt="${label}"
                   aria-label="${label}"
                   src="/resources/chars/${character}.png"
                 />
+                <div class="tooltiptext">${label}</div>
               </div>
             `;
           });
@@ -244,7 +370,7 @@
                 height="44"
               >
                 <circle
-                  stroke="rgba(121, 123, 129, 0.4)"
+                  stroke="#9298a040"
                   stroke-width="2"
                   stroke-dasharray="8"
                   fill="transparent"
@@ -271,13 +397,13 @@
                 </div>
               </td>
               <td>${Math.round(rating * 10) / 10}</td>
-              <td>
+              <td class="ranktooltip" tabindex="0">
                 <img
-                  title="${rankStr}"
                   alt="${rankStr}"
                   aria-label="${rankStr}"
                   src="/resources/ranks/${rankStr}.svg"
                 />
+                <div class="tooltiptext">${rankStr}</div>
               </td>
               <td>
                 <span>${wins}</span>
@@ -291,10 +417,10 @@
           <thead>
             <tr>
               <th class="stuck" style="position: sticky; width: 25px;" >#</th>
-              <th class="stuck edge right-pad" style="text-align: left; position: sticky;">Player</th>
-              <th class="left-pad right-pad" style="text-align: left;">Characters</th>
-              <th>Rating</th>
-              <th>Rank</th>
+              <th class="stuck edge right-pad" style="text-align: left; position: sticky;">PLAYER</th>
+              <th class="left-pad right-pad" style="text-align: left;">CHARACTERS</th>
+              <th>RATING</th>
+              <th>RANK</th>
               <th>W / L</th>
             </tr>
           </thead>
