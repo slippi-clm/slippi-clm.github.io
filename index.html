@@ -159,7 +159,7 @@
       p.getConnectCode.user.rankedNetplayProfile.ratingOrdinal
     );
     const uncase = (s) => (
-      s.split(' ').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ')
+      s.replace('_', ' ').split(' ').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ')
     );
     const now = Math.floor(Date.now() / 1000);
     fetch(`/data.json?now=${now}`)
