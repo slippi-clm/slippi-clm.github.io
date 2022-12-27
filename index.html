@@ -301,17 +301,31 @@
         document.getElementById('updatedAt').innerHTML = (
           `Last updated ${updatedAtText}`
         );
-        const players = Object.values(data);
-        players.sort((p1, p2) => getRating(p2) - getRating(p1))
+        const players = Object.values(data)
+          .filter(p => p.getConnectCode)
+          .map(p => {
+            const user = p.getConnectCode.user;
+            const wins = user.rankedNetplayProfile.wins || 0;
+            const losses = user.rankedNetplayProfile.losses || 0;
+            let rating = getRating(p);
+            if (wins + losses < 5) {
+              rating = -1 / rating;
+            }
+            return { ...p, rating }
+          });
+        console.log(players);
+        players.sort((p1, p2) => p2.rating - p1.rating)
         const rows = players.map((p, i) => {
-          const rating = getRating(p);
+          const rating = p.rating;
+          const isRanked = rating > 0;
           const user = p.getConnectCode.user;
           const cc = user.connectCode.code;
           const slippiLink = `https://slippi.gg/user/${cc.replace('#', '-')}`;
           const chars = user.rankedNetplayProfile.characters;
           const isTop = !!user.rankedNetplayProfile.dailyGlobalPlacement;
           const needsPlus = chars.length > 5;
-          const { wins, losses } = user.rankedNetplayProfile;
+            const wins = user.rankedNetplayProfile.wins || 0;
+            const losses = user.rankedNetplayProfile.losses || 0;
           const needsTag = p.tag && p.tag.toLowerCase() !== user.displayName.toLowerCase();
           const rankStr = (rating >= 2191.75 && isTop) ? 'Grandmaster' : (
             rating >= 2350.00 ? 'Master 3' : (
@@ -383,9 +397,19 @@
               </svg>
             </div>
           `;
+          const rankHtml = !isRanked ? '' : `
+            <img
+              alt="${rankStr}"
+              aria-label="${rankStr}"
+              src="/resources/ranks/${rankStr}.svg"
+            />
+            <div class="tooltiptext">${rankStr}</div>
+          `;
           return `
             <tr>
-              <td class="stuck" style="position: sticky; width: 25px;" >${i + 1}</td>
+              <td class="stuck" style="position: sticky; width: 25px;" >
+                ${isRanked ? i + 1 : '-'}
+              </td>
               <td class="stuck edge right-pad" style="text-align: left; position: sticky;" >
                 <a href="${slippiLink}">
                   <p>${user.displayName}</p>
@@ -398,14 +422,9 @@
                   ${extraHtml}
                 </div>
               </td>
-              <td>${Math.round(rating * 10) / 10}</td>
+              <td>${isRanked ? (Math.round(rating * 10) / 10) : '-'}</td>
               <td class="ranktooltip" tabindex="0">
-                <img
-                  alt="${rankStr}"
-                  aria-label="${rankStr}"
-                  src="/resources/ranks/${rankStr}.svg"
-                />
-                <div class="tooltiptext">${rankStr}</div>
+                ${rankHtml}
               </td>
               <td>
                 <span>${wins}</span>
