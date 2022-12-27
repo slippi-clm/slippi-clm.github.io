@@ -209,6 +209,19 @@
         translate(0, -11px)
         scale3d(.5,.5,1);
       }
+      a  {
+        color:#5994af;
+        text-decoration: none;
+      }
+      a:visited  {
+        color:#5994af;
+      }
+      a:hover  {
+        color:#4f86a0;
+      }
+      a:active  {
+        color:#4f86a0;
+      }
       @media screen and (max-width: 740px) {
         h1 {
           font-size: 1.8rem;
@@ -387,7 +400,7 @@
             <tr>
               <td class="stuck" style="position: sticky; width: 25px;" >${i + 1}</td>
               <td class="stuck edge right-pad" style="text-align: left; position: sticky;" >
-                <a href="${slippiLink}">
+                <a target="_blank" href="${slippiLink}">
                   <p>${user.displayName}</p>
                   <p>${cc} ${needsTag ? `[${p.tag}]` : ''}</p>
                 </a>
@@ -430,8 +443,8 @@
         `;
         document.getElementById('toAdd').innerHTML = `
           Use the
-          <a
-            style="font-weight: bolder; font-size: 0.8rem"
+          <a id="googleform" target="_blank"
+            style="font-size: 0.8rem"
             href="https://docs.google.com/forms/d/e/1FAIpQLSeGQXm0m9d0t5XSDc0weg5E-lP_OzGO4ANlZfNWPtYyg1142Q/viewform?usp=sf_link"
           >
           Google form
