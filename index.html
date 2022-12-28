@@ -167,6 +167,9 @@
         padding-right: 25px;
       }
       .left-pad {
+        padding-left: 25px;
+      }
+      .left-pad-sm {
         padding-left: 15px;
       }
       .ranktooltip {
@@ -246,10 +249,13 @@
         .edge {
           border-right: 1px solid black;
           box-shadow: 2px 0 4px -2px rgb(0 0 0  / 60%);
-          left: 45px;
+          left: 50px;
         }
         .right-pad {
           padding-right: 15px;
+        }
+        .left-pad {
+          padding-left: 15px;
         }
         table td:first-child {
           padding: 0 10px;
@@ -441,17 +447,17 @@
                   <p>${cc} ${needsTag ? `[${p.tag}]` : ''}</p>
                 </a>
               </td>
-              <td class="left-pad right-pad" style="text-align: left;">
+              <td class="left-pad-sm right-pad" style="text-align: left;">
                 <div style="display: flex; flex-direction: row;" >
                   ${charsHtml.join('')}
                   ${extraHtml}
                 </div>
               </td>
-              <td>${isRanked ? (Math.round(rating * 10) / 10) : '-'}</td>
-              <td class="ranktooltip" tabindex="0">
+              <td class="left-pad right-pad">${isRanked ? (Math.round(rating * 10) / 10) : '-'}</td>
+              <td class="ranktooltip left-pad right-pad" tabindex="0">
                 ${rankHtml}
               </td>
-              <td>
+              <td class="left-pad right-pad">
                 <span>${wins}</span>
                 <span>/</span>
                 <span>${losses}</span>
@@ -464,7 +470,7 @@
             <tr>
               <th class="stuck" style="position: sticky; width: 30px;" >#</th>
               <th class="stuck edge right-pad" style="text-align: left; position: sticky;">PLAYER</th>
-              <th class="left-pad right-pad" style="text-align: left;">CHARACTERS</th>
+              <th class="left-pad-sm right-pad" style="text-align: left;">CHARACTERS</th>
               <th>RATING</th>
               <th>RANK</th>
               <th>W / L</th>
