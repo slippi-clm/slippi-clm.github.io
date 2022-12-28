@@ -354,29 +354,32 @@
           const chars = user.rankedNetplayProfile.characters;
           const isTop = !!user.rankedNetplayProfile.dailyGlobalPlacement;
           const needsPlus = chars.length > 5;
-            const wins = user.rankedNetplayProfile.wins || 0;
-            const losses = user.rankedNetplayProfile.losses || 0;
+          const wins = user.rankedNetplayProfile.wins || 0;
+          const losses = user.rankedNetplayProfile.losses || 0;
+          const totalGames = wins + losses;
           const needsTag = p.tag && p.tag.toLowerCase() !== user.displayName.toLowerCase();
-          const rankStr = (rating >= 2191.75 && isTop) ? 'Grandmaster' : (
-            rating >= 2350.00 ? 'Master 3' : (
-              rating >= 2275.00 ? 'Master 2' : (
-                rating >= 2191.75 ? 'Master 1' : (
-                  rating >= 2136.28 ? 'Diamond 3' : (
-                    rating >= 2073.67 ? 'Diamond 2' : (
-                      rating >= 2003.92 ? 'Diamond 1' : (
-                        rating >= 1927.03 ? 'Platinum 3' : (
-                          rating >= 1843.00 ? 'Platinum 2' : (
-                            rating >= 1751.83 ? 'Platinum 1' : (
-                              rating >= 1653.52 ? 'Gold 3' : (
-                                rating >= 1548.07 ? 'Gold 2' : (
-                                  rating >= 1435.48 ? 'Gold 1' : (
-                                    rating >= 1315.75 ? 'Silver 3' : (
-                                      rating >= 1188.88 ? 'Silver 2' : (
-                                        rating >= 1054.87 ? 'Silver 1' : (
-                                          rating >= 913.72 ? 'Bronze 3' : (
-                                            rating >= 765.43 ? 'Bronze 2' : (
-                                              'Bronze 1'
-          ))))))))))))))))));
+          const rankStr = totalGames === 0 ? 'Unranked' : (
+            totalGames < 5 ? 'Pending' : (
+              (rating >= 2191.75 && isTop) ? 'Grandmaster' : (
+                rating >= 2350.00 ? 'Master 3' : (
+                  rating >= 2275.00 ? 'Master 2' : (
+                    rating >= 2191.75 ? 'Master 1' : (
+                      rating >= 2136.28 ? 'Diamond 3' : (
+                        rating >= 2073.67 ? 'Diamond 2' : (
+                          rating >= 2003.92 ? 'Diamond 1' : (
+                            rating >= 1927.03 ? 'Platinum 3' : (
+                              rating >= 1843.00 ? 'Platinum 2' : (
+                                rating >= 1751.83 ? 'Platinum 1' : (
+                                  rating >= 1653.52 ? 'Gold 3' : (
+                                    rating >= 1548.07 ? 'Gold 2' : (
+                                      rating >= 1435.48 ? 'Gold 1' : (
+                                        rating >= 1315.75 ? 'Silver 3' : (
+                                          rating >= 1188.88 ? 'Silver 2' : (
+                                            rating >= 1054.87 ? 'Silver 1' : (
+                                              rating >= 913.72 ? 'Bronze 3' : (
+                                                rating >= 765.43 ? 'Bronze 2' : (
+                                                  'Bronze 1'
+          ))))))))))))))))))));
           chars.sort((c1, c2) => c2.gameCount - c1.gameCount);
           const games = chars.reduce((total, { gameCount }) => total + gameCount, 0);
           const freqChars = chars.filter(({ gameCount }) => gameCount > games * 0.02);
@@ -429,12 +432,11 @@
           `;
           const rankHtml = `
             <img
-              style="visibility: ${isRanked ? 'visible' : 'hidden'}"
               alt="${rankStr}"
               aria-label="${rankStr}"
               src="/resources/ranks/${rankStr}.svg"
             />
-            ${!isRanked ? '' : `<div class="tooltiptext">${rankStr}</div>`}
+            <div class="tooltiptext">${rankStr}</div>
           `;
           return `
             <tr>
