@@ -56,14 +56,14 @@
         margin-top: 20px;
         overflow-x: auto;
         width: 90vw;
-        max-width: 980px;
+        max-width: 960px;
         padding-bottom: 16px;
       }
       table {
         font-weight: bold;
         color: #F4F4F9;
         width: 90vw;
-        max-width: 980px;
+        max-width: 960px;
         border-collapse: separate;
         border-spacing: 0;
         background: #262631;
@@ -80,7 +80,7 @@
       }
       table th {
         color: #9298a0;
-        padding: 8px 0;
+        padding: 8px;
         white-space: nowrap;
         font-weight: 400;
         font-size: 16px;
@@ -152,11 +152,6 @@
       table td {
         text-align: center;
       }
-      table td a p {
-        max-width: calc(min(44vw, 325px));
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
       div.extra {
         display: flex;
         align-items: center;
@@ -172,9 +167,6 @@
         padding-right: 25px;
       }
       .left-pad {
-        padding-left: 25px;
-      }
-      .left-pad-sm {
         padding-left: 15px;
       }
       .ranktooltip {
@@ -242,7 +234,7 @@
       a:active  {
         color:#4f86a0;
       }
-      @media screen and (max-width: 1080px) {
+      @media screen and (max-width: 740px) {
         h1 {
           font-size: 1.8rem;
         }
@@ -257,9 +249,6 @@
           left: 45px;
         }
         .right-pad {
-          padding-right: 15px;
-        }
-        .left-pad {
           padding-right: 15px;
         }
         table td:first-child {
@@ -295,7 +284,7 @@
       <div class="container">
         <table id="data"></table>
       </div>
-      <p style="margin-top: 10px; font-size: .8rem; text-align: center;" id="toAdd"></p>
+      <p style="margin-top: 10px; font-size: .8rem;" id="toAdd"></p>
     </div>
   </body>
   <script>
@@ -452,17 +441,17 @@
                   <p>${cc} ${needsTag ? `[${p.tag}]` : ''}</p>
                 </a>
               </td>
-              <td class="left-pad-sm right-pad" style="text-align: left;">
+              <td class="left-pad right-pad" style="text-align: left;">
                 <div style="display: flex; flex-direction: row;" >
                   ${charsHtml.join('')}
                   ${extraHtml}
                 </div>
               </td>
-              <td class="left-pad right-pad">${isRanked ? (Math.round(rating * 10) / 10) : '-'}</td>
-              <td class="ranktooltip left-pad right-pad" tabindex="0">
+              <td>${isRanked ? (Math.round(rating * 10) / 10) : '-'}</td>
+              <td class="ranktooltip" tabindex="0">
                 ${rankHtml}
               </td>
-              <td class="left-pad right-pad">
+              <td>
                 <span>${wins}</span>
                 <span>/</span>
                 <span>${losses}</span>
@@ -475,10 +464,10 @@
             <tr>
               <th class="stuck" style="position: sticky; width: 25px;" >#</th>
               <th class="stuck edge right-pad" style="text-align: left; position: sticky;">PLAYER</th>
-              <th class="left-pad-sm right-pad" style="text-align: left;">CHARACTERS</th>
-              <th class="left-pad right-pad">RATING</th>
-              <th class="left-pad right-pad">RANK</th>
-              <th class="left-pad right-pad">W / L</th>
+              <th class="left-pad right-pad" style="text-align: left;">CHARACTERS</th>
+              <th>RATING</th>
+              <th>RANK</th>
+              <th>W / L</th>
             </tr>
           </thead>
           <tbody>${rows.join('')}</tbody>
@@ -486,7 +475,7 @@
         document.getElementById('toAdd').innerHTML = `
           Use the
           <a id="googleform" target="_blank"
-            style="font-size: 0.8rem;"
+            style="font-size: 0.8rem"
             href="https://docs.google.com/forms/d/e/1FAIpQLSeGQXm0m9d0t5XSDc0weg5E-lP_OzGO4ANlZfNWPtYyg1142Q/viewform?usp=sf_link"
           >
           Google form
