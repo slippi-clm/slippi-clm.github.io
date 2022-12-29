@@ -305,7 +305,6 @@
         }
         #updatedAt {
           justify-self: start;
-          align-self: end;
         }
       }
       @media screen and (max-width: 420px) {
@@ -382,7 +381,7 @@
           [1]: '1 minute ago',
         })[minutesAgo] || `${minutesAgo} minutes ago`;
         document.getElementById('updatedAt').innerHTML = (
-          `Last updated ${updatedAtText}<div class="tooltiptext">Updates every 50 minutes or every new player</div>`
+          `Last updated ${updatedAtText}<div class="tooltiptext">Updates every 50 minutes or added tag</div>`
         );
         const players = Object.values(data)
           .filter(p => p.getConnectCode)
