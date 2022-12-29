@@ -53,11 +53,36 @@
       .container {
         overflow-y: hidden;
         border-radius: 6px;
-        margin-top: 20px;
         overflow-x: auto;
         width: 90vw;
         max-width: 960px;
         padding-bottom: 16px;
+      }
+      .subheader {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        justify-items: center;
+        align-items: center;
+        margin-bottom: 10px;
+        width: 90vw;
+        max-width: 960px;
+      }
+      #form-button {
+        color: #5994af;
+        padding: 8px 20px;
+        border: solid 1px #5994af;
+        border-radius: 4px;
+        justify-self: end;
+        font-size: 12px;
+      }
+      #form-button:hover {
+        color:#4f86a0;
+        border: solid 1px #4f86a0;
+        background-color: #4f86a020;
+      }
+      #updatedAt {
+        font-size: 16px;
+        text-align: center;
       }
       table {
         font-weight: bold;
@@ -215,11 +240,11 @@
       #updatedAt .tooltiptext {
         top: unset;
         transform: unset;
-        transform: translate(calc(-50% + 150px))
+        transform: translate(calc(-50% + 110px))
         scale3d(.5,.5,1);
       }
       #updatedAt:hover .tooltiptext {
-        transform: translate(calc(-50% + 150px))
+        transform: translate(calc(-50% + 110px))
         scale3d(1,1,1);
         opacity: 1;
         visibility: visible;
@@ -247,8 +272,8 @@
           left: 0;
         }
         .edge {
-          border-right: 1px solid black;
-          box-shadow: 2px 0 4px -2px rgb(0 0 0  / 60%);
+          border-right: 1px solid rgba(0, 0, 0, 0.2);
+          box-shadow: 2px 0 4px -2px rgba(0, 0, 0, 0.2);
           left: 50px;
         }
         .right-pad {
@@ -274,6 +299,28 @@
           visibility: visible;
         }
       }
+      @media screen and (max-width: 680px) {
+        .subheader {
+          grid-template-columns: 0fr 2fr 1fr;
+        }
+        #updatedAt {
+          justify-self: start;
+          align-self: end;
+        }
+      }
+      @media screen and (max-width: 420px) {
+        .subheader {
+          display: flex;
+          flex-direction: column;
+        }
+        #updatedAt {
+          align-self: center;
+          margin-bottom: 10px;
+        }
+        .right-pad {
+          padding-right: 10px;
+        }
+      }
     </style>
     <link rel="icon" href="/resources/cropped-CLM-Icon-32x32.png" sizes="32x32" />
     <link rel="icon" href="/resources/cropped-CLM-Icon-192x192.png" sizes="192x192" />
@@ -286,11 +333,16 @@
         </a>
         Chicagoland Melee <br> Slippi Leaderboard
       </h1>
-      <p class="tooltip" style="font-size: 16px; width: 300px; text-align: center;" id="updatedAt"></p>
+      <div class="subheader">
+        <div></div>
+        <p class="tooltip" id="updatedAt"></p>
+        <a id="form-button" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeGQXm0m9d0t5XSDc0weg5E-lP_OzGO4ANlZfNWPtYyg1142Q/viewform?usp=sf_link">
+          ADD/REMOVE&nbsp;TAG
+        </a>
+      </div>
       <div class="container">
         <table id="data"></table>
       </div>
-      <p style="margin-top: 10px; margin-bottom: 20px; font-size: .8rem;" id="toAdd"></p>
     </div>
   </body>
   <script>
@@ -330,7 +382,7 @@
           [1]: '1 minute ago',
         })[minutesAgo] || `${minutesAgo} minutes ago`;
         document.getElementById('updatedAt').innerHTML = (
-          `Last updated ${updatedAtText}<div class="tooltiptext">Updates every 50 minutes or upon adding new player</div>`
+          `Last updated ${updatedAtText}<div class="tooltiptext">Updates every 50 minutes or every new player</div>`
         );
         const players = Object.values(data)
           .filter(p => p.getConnectCode)
@@ -479,16 +531,6 @@
             </tr>
           </thead>
           <tbody>${rows.join('')}</tbody>
-        `;
-        document.getElementById('toAdd').innerHTML = `
-          Use the
-          <a id="googleform" target="_blank"
-            style="font-size: 0.8rem"
-            href="https://docs.google.com/forms/d/e/1FAIpQLSeGQXm0m9d0t5XSDc0weg5E-lP_OzGO4ANlZfNWPtYyg1142Q/viewform?usp=sf_link"
-          >
-          Google form
-          </a>
-          to be added to/removed from the leaderboard
         `;
       })
   </script>
