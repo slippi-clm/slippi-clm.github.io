@@ -285,19 +285,6 @@
         table td:first-child {
           padding: 0 10px;
         }
-        .tooltip:focus .tooltiptext {
-          transform: translate(calc(-50% + 22px))
-          scale3d(1,1,1);
-          opacity: 1;
-          visibility: visible;
-        }
-        .ranktooltip:focus .tooltiptext {
-          transform: translate(calc(-50% + 26px))
-          translate(0, -6px)
-          scale3d(1,1,1);
-          opacity: 1;
-          visibility: visible;
-        }
       }
       @media screen and (max-width: 680px) {
         .subheader {
@@ -324,7 +311,7 @@
     <link rel="icon" href="/resources/cropped-CLM-Icon-32x32.png" sizes="32x32" />
     <link rel="icon" href="/resources/cropped-CLM-Icon-192x192.png" sizes="192x192" />
   </head>
-  <body>
+  <body ontouchmove>
     <div class="main">
       <h1 style="display: flex; align-items: center;" >
         <a href="https://chicagomelee.com/">
