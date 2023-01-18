@@ -1,4 +1,4 @@
-const curl = require('request-curl');
+// const curl = require('request-curl');
 const fs = require('fs/promises');
 const csv = require('csvtojson');
 
@@ -8,16 +8,19 @@ const csvUrl = (
   "/export?format=csv"
 );
 
+let nodeFetch;
 const fetch = async (url) => {
-  const res = await curl({ url });
-  if (res.statusCode === 307) {
+  const res = await nodeFetch(url);
+  if (res.status === 307) {
     return await fetch(res.headers.Location)
   }
-  const raw = await csv({ noheader: true }).fromString(res.body);
+  const body = await res.text();
+  const raw = await csv({ noheader: true }).fromString(body);
   return raw.slice(1);
 };
 
-const main = async () => {
+const main = async (nf) => {
+  nodeFetch = nf;
   const data = await fetch(csvUrl);
   const codes = {};
   data.forEach((row) => {
@@ -36,4 +39,4 @@ const main = async () => {
   await fs.writeFile('./codes.json', JSON.stringify(next));
 }
 
-main();
+import('node-fetch').then(({default: nodeFetch}) => main(nodeFetch));

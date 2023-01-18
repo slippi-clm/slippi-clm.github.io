@@ -9,6 +9,6 @@
     "csvtojson": "^2.0.10",
     "graphql": "^16.6.0",
     "graphql-request": "^5.1.0",
-    "request-curl": "^1.4.1"
+    "node-fetch": "^3.3.0"
   }
 }
