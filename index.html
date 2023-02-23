@@ -195,7 +195,7 @@
         padding-left: 25px;
       }
       .left-pad-sm {
-        padding-left: 15px;
+        padding-left: 10px;
       }
       .ranktooltip {
         width: 52px;
@@ -275,6 +275,7 @@
           border-right: 1px solid rgba(0, 0, 0, 0.2);
           box-shadow: 2px 0 4px -2px rgba(0, 0, 0, 0.2);
           left: 50px;
+          overflow-x: hidden;
         }
         .right-pad {
           padding-right: 15px;
@@ -286,12 +287,20 @@
           padding: 0 10px;
         }
       }
-      @media screen and (max-width: 680px) {
+      @media screen and (max-width: 768px) {
         .subheader {
           grid-template-columns: 0fr 2fr 1fr;
         }
         #updatedAt {
           justify-self: start;
+        }
+      }
+      @media screen and (max-width: 480px) {
+        .container {
+          width: 100%;
+        }
+        .edge {
+          max-width: 150px;
         }
       }
       @media screen and (max-width: 420px) {
