@@ -8,6 +8,7 @@ try {
 	const isNotNum  = !Object.is(typeof sinceLast, 'number');
 	const isBadNum  = sinceLast < 0;
 	const isTooLong = sinceLast > 50;
+	console.log({ sinceLast, isNotNum, isBadNum, isTooLong })
 	if (isNotNum || isBadNum || isTooLong) {
 		process.exit(1);
 	}
