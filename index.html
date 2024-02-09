@@ -367,6 +367,9 @@
     const uncase = (s) => (
       s.replaceAll('_', ' ').split(' ').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ').replace('Game And Watch', 'Mr. Game & Watch').replace('Dr', 'Dr.')
     );
+    const isBanned = (cc) => {
+      return { 'HERO#147': true, 'MEKK#251': true, 'NOFL#113': true }[cc];
+    };
     const now = Math.floor(Date.now() / 1000);
     fetch(`/data.json?now=${now}`)
       .then(res => res.json())
@@ -381,6 +384,7 @@
         );
         const players = Object.values(data)
           .filter(p => p.getConnectCode)
+          .filter(p => !isBanned(p.getConnectCode.user.connectCode.code))
           .map(p => {
             const user = p.getConnectCode.user;
             const wins = user.rankedNetplayProfile.wins || 0;
