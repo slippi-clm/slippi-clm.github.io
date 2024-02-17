@@ -1,5 +1,5 @@
 // const curl = require('request-curl');
-const fs = require('fs/promises');
+const fs = require('fs').promises;
 const csv = require('csvtojson');
 
 const csvUrl = (
