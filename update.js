@@ -28,6 +28,7 @@ query AccountManagementPageQuery($cc: String!) {
   }
 }
 `;
+const timeout = async ms => new Promise((resolve) => setTimeout(resolve, ms));
 const endpoint = 'https://gql-gateway-dot-slippi.uc.r.appspot.com/graphql';
 const getPlayerData = async (cc) => {
   const variables = { cc: cc.toUpperCase() };
@@ -40,10 +41,10 @@ const getPlayerData = async (cc) => {
     catch (e) {
       rtCount += 1;
       console.log("Retrying", { cc, rtCount });
+      await timeout(5000);
     }
   }
 }
-const timeout = async ms => new Promise((resolve) => setTimeout(resolve, ms));
 const getUnixTimestamp = () => Math.floor(Date.now() / 1000);
 const main = async () => {
   const data = {};
