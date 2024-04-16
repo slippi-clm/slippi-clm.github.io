@@ -31,8 +31,17 @@ query AccountManagementPageQuery($cc: String!) {
 const endpoint = 'https://gql-gateway-dot-slippi.uc.r.appspot.com/graphql';
 const getPlayerData = async (cc) => {
   const variables = { cc: cc.toUpperCase() };
-  const data = await request(endpoint, query, variables);
-  return data;
+  let rtCount = 0;
+  while (true) {
+    try {
+      const data = await request(endpoint, query, variables);
+      return data;
+    }
+    catch (e) {
+      rtCount += 1;
+      console.log("Retrying", { cc, rtCount });
+    }
+  }
 }
 const timeout = async ms => new Promise((resolve) => setTimeout(resolve, ms));
 const getUnixTimestamp = () => Math.floor(Date.now() / 1000);
