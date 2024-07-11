@@ -1,0 +1,14 @@
+{
+  "name": "slippi-clm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:mitchdzugan/slippi-clm.git",
+  "author": "mitchdzugan <mitchdzugan@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "csvtojson": "^2.0.10",
+    "graphql": "^16.6.0",
+    "graphql-request": "^5.1.0",
+    "node-fetch": "^3.3.0"
+  }
+}
