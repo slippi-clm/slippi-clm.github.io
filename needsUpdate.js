@@ -7,7 +7,7 @@ try {
 	const sinceLast = (now - data.updatedAt) / 60;
 	const isNotNum  = !Object.is(typeof sinceLast, 'number');
 	const isBadNum  = sinceLast < 0;
-	const isTooLong = sinceLast > 50;
+	const isTooLong = sinceLast > 35;
 	if (isNotNum || isBadNum || isTooLong) {
 		process.exit(1);
 	}
