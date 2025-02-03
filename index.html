@@ -23,7 +23,7 @@
       ::-moz-selection {
         background: #3b6e86; /* Gecko Browsers */
       }
-      ::-webkit-scrollbar{ 
+      ::-webkit-scrollbar{
         width: 20px;
         height: 20px;
       }
@@ -380,7 +380,7 @@
           [1]: '1 minute ago',
         })[minutesAgo] || `${minutesAgo} minutes ago`;
         document.getElementById('updatedAt').innerHTML = (
-          `Last updated ${updatedAtText}<div class="tooltiptext">Updates every 50 minutes or added tag</div>`
+          `Last updated ${updatedAtText}<div class="tooltiptext">Slow updates this week while Im afk. Back to normal on 2/9</div>`
         );
         const players = Object.values(data)
           .filter(p => p.getConnectCode)
