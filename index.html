@@ -380,7 +380,7 @@
           [1]: '1 minute ago',
         })[minutesAgo] || `${minutesAgo} minutes ago`;
         document.getElementById('updatedAt').innerHTML = (
-          `Last updated ${updatedAtText}<div class="tooltiptext">Slow updates this week while Im afk. Back to normal on 2/9</div>`
+          `Last updated ${updatedAtText}<div class="tooltiptext">Updates every 50 minutes or within 20 minutes of added tag</div>`
         );
         const players = Object.values(data)
           .filter(p => p.getConnectCode)
