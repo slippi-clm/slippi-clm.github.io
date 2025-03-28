@@ -19,7 +19,6 @@ query AccountManagementPageQuery($cc: String!) {
         dailyRegionalPlacement
         continent
         characters {
-          id
           character
           gameCount
         }
@@ -39,6 +38,7 @@ const getPlayerData = async (cc) => {
       return data;
     }
     catch (e) {
+      console.log(e);
       rtCount += 1;
       console.log("Retrying", { cc, rtCount });
       await timeout(5000);
