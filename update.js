@@ -28,7 +28,7 @@ query AccountManagementPageQuery($cc: String!) {
 }
 `;
 const timeout = async ms => new Promise((resolve) => setTimeout(resolve, ms));
-const endpoint = 'https://gql-gateway-dot-slippi.uc.r.appspot.com/graphql';
+const endpoint = 'https://gql-gateway-2-dot-slippi.uc.r.appspot.com/graphql';
 const getPlayerData = async (cc) => {
   const variables = { cc: cc.toUpperCase() };
   let rtCount = 0;
