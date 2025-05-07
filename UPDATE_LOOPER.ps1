@@ -18,7 +18,15 @@ while ($true) {
     Write-Output "checking for update $(Get-Date)"
     node $needsUpdateJs
     if($LASTEXITCODE -eq 0) {
-        Write-Output "Doesnt need update"
+        Write-Output "checking for tracked codes changes"
+        $ChangedFiles = $(git status --porcelain | Measure-Object | Select-Object -expand Count)
+        Write-Output $ChangedFiles
+        if($ChangedFiles -gt 0) {
+            Write-Output "syncing tracked codes and performing update"
+			git add -A
+			git commit -m "codes update via script"
+            # Do-Update
+        }
     }
     else {
         Write-Output "performing update"
