@@ -20,12 +20,11 @@ while ($true) {
     if($LASTEXITCODE -eq 0) {
         Write-Output "checking for tracked codes changes"
         $ChangedFiles = $(git status --porcelain | Measure-Object | Select-Object -expand Count)
-        Write-Output $ChangedFiles
         if($ChangedFiles -gt 0) {
             Write-Output "syncing tracked codes and performing update"
 			git add -A
 			git commit -m "codes update via script"
-            # Do-Update
+            Do-Update
         }
     }
     else {
