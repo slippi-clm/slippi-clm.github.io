@@ -8,8 +8,8 @@ cd $rootDir
 function Do-Update {
     node $updateJs
     git add -A
-	git commit -m "data update via codes script"
-	git push
+    git commit -m "data update via codes script"
+    git push
 }
 
 while ($true) {
@@ -22,8 +22,8 @@ while ($true) {
         $ChangedFiles = $(git status --porcelain | Measure-Object | Select-Object -expand Count)
         if($ChangedFiles -gt 0) {
             Write-Output "syncing tracked codes and performing update"
-			git add -A
-			git commit -m "codes update via script"
+            git add -A
+            git commit -m "codes update via script"
             Do-Update
         }
     }
