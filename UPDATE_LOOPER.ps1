@@ -8,7 +8,7 @@ cd $rootDir
 function Do-Update {
     node $updateJs
     git add -A
-    git commit -m "data update via codes script"
+    git commit -m "UPDATE_LOOPER: data update"
     git push
 }
 
@@ -23,7 +23,7 @@ while ($true) {
         if($ChangedFiles -gt 0) {
             Write-Output "syncing tracked codes and performing update"
             git add -A
-            git commit -m "codes update via script"
+            git commit -m "UPDATE_LOOPER: codes update"
             Do-Update
         }
     }
