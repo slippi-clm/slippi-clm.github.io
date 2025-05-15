@@ -36,7 +36,8 @@ const getPlayerData = async (rawCC) => {
     try {
       const data = await request(endpoint, query, variables);
       const user = data.getUser;
-      return { getConnectCode: { user } };
+      const getConnectCode = user && { user };
+      return { getConnectCode };
     }
     catch (e) {
       console.log(e);
