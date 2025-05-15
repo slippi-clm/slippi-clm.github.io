@@ -36,7 +36,7 @@ const getPlayerData = async (rawCC) => {
     try {
       const data = await request(endpoint, query, variables);
       const user = data.getUser;
-      return { getConnectCode: user };
+      return { getConnectCode: { user } };
     }
     catch (e) {
       console.log(e);
@@ -52,7 +52,6 @@ const main = async () => {
   for (const [code, tag] of codes) {
     const playerData = await getPlayerData(code);
     console.log(code);
-    console.log(playerData);
     await timeout(5000);
     data[code.toUpperCase()] = { ...playerData, tag };
   }
