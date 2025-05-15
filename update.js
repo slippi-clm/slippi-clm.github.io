@@ -2,40 +2,41 @@ const { request, gql } = require('graphql-request');
 const fs = require('fs/promises');
 const codes = require('./codes.json');
 const query = gql`
-query AccountManagementPageQuery($cc: String!) {
-  getConnectCode(code: $cc) {
-    user {
-      displayName
-      connectCode {
-        code
-      }
-      rankedNetplayProfile {
-        id
-        ratingOrdinal
-        ratingUpdateCount
-        wins
-        losses
-        dailyGlobalPlacement
-        dailyRegionalPlacement
-        continent
-        characters {
-          character
-          gameCount
-        }
+query UserProfilePageQuery($cc: String, $uid: String) {
+  getUser(fbUid: $uid, connectCode: $cc) {
+    displayName
+    connectCode {
+      code
+    }
+    rankedNetplayProfile {
+      id
+      ratingOrdinal
+      ratingUpdateCount
+      wins
+      losses
+      dailyGlobalPlacement
+      dailyRegionalPlacement
+      continent
+      characters {
+        character
+        gameCount
       }
     }
   }
 }
 `;
+
 const timeout = async ms => new Promise((resolve) => setTimeout(resolve, ms));
-const endpoint = 'https://gql-gateway-2-dot-slippi.uc.r.appspot.com/graphql';
-const getPlayerData = async (cc) => {
-  const variables = { cc: cc.toUpperCase() };
+const endpoint = 'https://internal.slippi.gg/graphql';
+const getPlayerData = async (rawCC) => {
+  const cc = rawCC.toUpperCase();
+  const variables = { cc };
   let rtCount = 0;
   while (true) {
     try {
       const data = await request(endpoint, query, variables);
-      return data;
+      const user = data.getUser;
+      return { getConnectCode: user };
     }
     catch (e) {
       console.log(e);
@@ -51,6 +52,7 @@ const main = async () => {
   for (const [code, tag] of codes) {
     const playerData = await getPlayerData(code);
     console.log(code);
+    console.log(playerData);
     await timeout(5000);
     data[code.toUpperCase()] = { ...playerData, tag };
   }
