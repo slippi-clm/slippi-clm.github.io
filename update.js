@@ -29,6 +29,9 @@ query UserProfilePageQuery($cc: String, $uid: String) {
 const timeout = async ms => new Promise((resolve) => setTimeout(resolve, ms));
 const endpoint = 'https://internal.slippi.gg/graphql';
 const getPlayerData = async (rawCC) => {
+  if (!rawCC.includes("#")) {
+    return { getConnectCode: null }
+  }
   const cc = rawCC.toUpperCase();
   const variables = { cc };
   let rtCount = 0;
