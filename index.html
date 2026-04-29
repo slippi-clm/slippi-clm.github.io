@@ -395,8 +395,15 @@
             }
             return { ...p, rating }
           });
-        players.sort((p1, p2) => p2.rating - p1.rating)
-        const rows = players.map((p, i) => {
+        players.sort((p1, p2) => p2.rating - p1.rating);
+        const isActive = ({ user: { rankedNetplayProfile } }) => (
+          Boolean(rankedNetplayProfile.wins || rankedNetplayProfile.losses)
+        );
+        const activeFirst = [
+          ...players.filter((p) => isActive(p.getConnectCode)),
+          ...players.filter((p) => !isActive(p.getConnectCode)),
+        ];
+        const rows = activeFirst.map((p, i) => {
           const rating = p.rating;
           const isRanked = rating > 0;
           const user = p.getConnectCode.user;
