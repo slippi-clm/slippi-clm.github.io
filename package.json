@@ -5,8 +5,11 @@
   "repository": "git@github.com:mitchdzugan/slippi-clm.git",
   "author": "mitchdzugan <mitchdzugan@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "dependencies": {
+    "@dz/-": "file:../dz__DOLLAR_SIGN__.ts",
     "csvtojson": "^2.0.10",
+    "git-client": "^1.11.1",
     "graphql": "^16.6.0",
     "graphql-request": "^5.1.0"
   }
